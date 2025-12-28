@@ -10,8 +10,12 @@ ENV PYTHONUNBUFFERED=1 \
     PIP_NO_CACHE_DIR=1 \
     PIP_DISABLE_PIP_VERSION_CHECK=1
 
-# 安装系统依赖
-RUN apt-get -o Acquire::Retries=5 update && \
+# 安装系统依赖（增强网络重试和超时配置，应对网络不稳定）
+RUN apt-get -o Acquire::Retries=10 \
+        -o Acquire::http::Timeout=60 \
+        -o Acquire::https::Timeout=60 \
+        -o Acquire::http::AllowRedirect=false \
+        update && \
     apt-get install -y --no-install-recommends \
       gcc \
       git \

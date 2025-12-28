@@ -29,8 +29,6 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
-      args:
-        - USE_CN_MIRROR=${USE_CN_MIRROR:-true}
     container_name: opensource_daily_report_backend
     ports:
       - "5011:5000"
