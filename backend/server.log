@@ -1,0 +1,14 @@
+ * Serving Flask app 'api_server'
+ * Debug mode: off
+2025-12-21 01:07:58,802 [INFO] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5001
+ * Running on http://192.168.1.112:5001
+2025-12-21 01:07:58,802 [INFO] [33mPress CTRL+C to quit[0m
+2025-12-21 01:14:38,280 [INFO] 127.0.0.1 - - [21/Dec/2025 01:14:38] "[35m[1mGET /api/publish/pending HTTP/1.1[0m" 500 -
+2025-12-21 01:14:40,993 [INFO] 127.0.0.1 - - [21/Dec/2025 01:14:40] "GET /api/make/tasks HTTP/1.1" 200 -
+2025-12-21 01:14:59,793 [INFO] 127.0.0.1 - - [21/Dec/2025 01:14:59] "[35m[1mGET /api/publish/pending HTTP/1.1[0m" 500 -
+2025-12-23 13:00:44,055 [INFO] 127.0.0.1 - - [23/Dec/2025 13:00:44] "[35m[1mGET /api/prompts HTTP/1.1[0m" 500 -
+2025-12-23 14:44:32,737 [INFO] 127.0.0.1 - - [23/Dec/2025 14:44:32] "[35m[1mGET /api/prompts HTTP/1.1[0m" 500 -
+2025-12-23 14:44:36,219 [INFO] 127.0.0.1 - - [23/Dec/2025 14:44:36] "[35m[1mGET /api/prompts HTTP/1.1[0m" 500 -
+2025-12-23 15:39:02,642 [INFO] 127.0.0.1 - - [23/Dec/2025 15:39:02] "[35m[1mGET /api/prompts HTTP/1.1[0m" 500 -

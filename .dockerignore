@@ -1,0 +1,67 @@
+# Git
+.git
+.gitignore
+.gitattributes
+
+# Python
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+*.egg
+*.egg-info
+dist
+build
+.pytest_cache
+.coverage
+htmlcov
+
+# Node.js
+node_modules
+npm-debug.log
+yarn-error.log
+.pnpm-debug.log
+
+# IDE
+.idea
+.vscode
+*.swp
+*.swo
+*~
+
+# 环境文件
+.env
+.env.local
+.env.*.local
+venv
+env
+ENV
+
+# 数据文件（不包含在镜像中，使用 volume）
+data/*
+!data/.gitkeep
+articles/*
+!articles/.gitkeep
+logs/*
+!logs/.gitkeep
+
+# 操作系统
+.DS_Store
+Thumbs.db
+*.log
+
+# Docker
+Dockerfile*
+docker-compose*.yml
+.dockerignore
+
+# 文档
+*.md
+!README.md
+
+# 其他
+*.tmp
+*.bak
+*.cache

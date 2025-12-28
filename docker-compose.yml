@@ -1,0 +1,100 @@
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: opensource_daily_report_mysql
+    command: --default-authentication-plugin=mysql_native_password --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE:-github_daily_report}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - TZ=Asia/Shanghai
+    ports:
+      - "3606:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./scripts/mysql/init:/docker-entrypoint-initdb.d:ro
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -p$MYSQL_ROOT_PASSWORD"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 40s
+    networks:
+      - opensource_daily_report_network
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+      args:
+        - USE_CN_MIRROR=${USE_CN_MIRROR:-true}
+    container_name: opensource_daily_report_backend
+    ports:
+      - "5011:5000"
+    environment:
+      - GITHUB_TOKEN=${GITHUB_TOKEN:-}
+      - WECHAT_APP_ID=${WECHAT_APP_ID:-}
+      - WECHAT_APP_SECRET=${WECHAT_APP_SECRET:-}
+      - FLASK_ENV=production
+      - MYSQL_HOST=${MYSQL_HOST:-mysql}
+      - MYSQL_PORT=${MYSQL_PORT:-3306}
+      - MYSQL_DATABASE=${MYSQL_DATABASE:-github_daily_report}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - TZ=Asia/Shanghai
+      # 使用宿主机代理，通过 Docker 网桥 IP (172.17.0.1) 访问
+      - HTTP_PROXY=http://172.17.0.1:7890
+      - HTTPS_PROXY=http://172.17.0.1:7890
+      - http_proxy=http://172.17.0.1:7890
+      - https_proxy=http://172.17.0.1:7890
+      - NO_PROXY=localhost,127.0.0.1,mysql,*.local
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      # 挂载数据目录，持久化存储
+      - ./data:/app/data
+      - ./articles:/app/articles
+      # 挂载日志目录（如果需要）
+      - ./logs:/app/logs
+    depends_on:
+      - mysql
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import requests; requests.get('http://localhost:5000/api/health')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+    networks:
+      - opensource_daily_report_network
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: opensource_daily_report_frontend
+    ports:
+      - "3011:80"
+    environment:
+      - TZ=Asia/Shanghai
+    depends_on:
+      - backend
+    restart: unless-stopped
+    networks:
+      - opensource_daily_report_network
+
+networks:
+  opensource_daily_report_network:
+    driver: bridge
+
+volumes:
+  data:
+  articles:
+  logs:
+  mysql_data:
