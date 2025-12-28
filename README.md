@@ -158,7 +158,7 @@ cd backend
 
 2. **安装 Python 依赖**
 ```bash
-pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
+pip install -r requirements.txt
 ```
 
 3. **配置环境变量**

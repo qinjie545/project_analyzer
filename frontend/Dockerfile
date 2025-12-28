@@ -7,9 +7,6 @@ WORKDIR /app
 # 复制 package 文件
 COPY package*.json ./
 
-# 设置淘宝镜像源
-RUN npm config set registry https://registry.npmmirror.com
-
 # 安装依赖（无 lock 文件使用 install）
 RUN npm install --only=production=false
 
